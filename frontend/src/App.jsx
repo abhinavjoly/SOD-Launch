@@ -8,7 +8,7 @@ const BMS_LOGO = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAB4cAAAIcCAYAAAD1
 // ─── API CONFIG ───────────────────────────────────────────────────
 // Replace BASE_URL with your backend's base URL when ready
 const API = {
-  BASE_URL: "/api"  // Vite proxies this to http://localhost:5000 — see vite.config.js,
+  BASE_URL: "https://sod-launchevent-backend.onrender.com/api",  // Vite proxies this to http://localhost:5000 — see vite.config.js,
   register: (data) => fetch(`${API.BASE_URL}/auth/register`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }),
   login:    (data) => fetch(`${API.BASE_URL}/auth/login`,    { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }),
   getUsers: (token) => fetch(`${API.BASE_URL}/admin/users`,  { headers: { Authorization: `Bearer ${token}` } }),
@@ -680,6 +680,22 @@ function QuizPage({ user, token, onNav }) {
   const LABELS = ["A", "B", "C", "D"];
   const q = QUIZ_QUESTIONS[idx];
 
+  // API helper
+  const API = {
+    submitScore: async ({ score, total }, token) => {
+      const res = await fetch("https://sod-launchevent-backend.onrender.com/api/quiz/score", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ score, total })
+      });
+      if (!res.ok) throw new Error(`Server error: ${res.status}`);
+      return await res.json();
+    }
+  };
+
   function pick(j) {
     if (answered) return;
     setAnswered(true);
@@ -688,21 +704,34 @@ function QuizPage({ user, token, onNav }) {
   }
 
   function next() {
-    if (idx + 1 >= QUIZ_QUESTIONS.length) finish();
-    else { setIdx(i => i + 1); setAnswered(false); setChosen(null); }
+    setIdx(i => i + 1);
+    setAnswered(false);
+    setChosen(null);
   }
 
-  async function finish() {
+  async function submit() {
+    // Only called by "SEE RESULTS →"
     const finalScore = score + (chosen === q.a ? 1 : 0);
-    setDone(true);
     try {
       await API.submitScore({ score: finalScore, total: QUIZ_QUESTIONS.length }, token);
-    } catch { /* score submission failed silently */ }
+      console.log("Score submitted:", finalScore);
+    } catch (err) {
+      console.error("Score submission failed:", err);
+    } finally {
+      setDone(true); // render results page
+    }
   }
 
-  if (done || (answered && idx + 1 >= QUIZ_QUESTIONS.length && chosen !== null)) {
+  // Results page
+  if (done) {
     const finalScore = score + (chosen === q.a ? 1 : 0);
-    const msgs = ["Keep studying — review your notes! 📖", "Not bad, keep pushing! 💡", "Solid performance! ⚡", "Impressive! Leaderboard material. 🔬", "PERFECT SCORE! Photon Master! 🏆"];
+    const msgs = [
+      "Keep studying — review your notes! 📖",
+      "Not bad, keep pushing! 💡",
+      "Solid performance! ⚡",
+      "Impressive! Leaderboard material. 🔬",
+      "PERFECT SCORE! Photon Master! 🏆"
+    ];
     const tier = finalScore <= 2 ? 0 : finalScore <= 4 ? 1 : finalScore <= 6 ? 2 : finalScore <= 8 ? 3 : 4;
     return (
       <div className="page">
@@ -720,6 +749,7 @@ function QuizPage({ user, token, onNav }) {
     );
   }
 
+  // Quiz page
   return (
     <div className="page">
       <div className="qw">
@@ -742,7 +772,8 @@ function QuizPage({ user, token, onNav }) {
               <button
                 key={j}
                 className={`opt ${answered && j === q.a ? "correct" : ""} ${answered && j === chosen && j !== q.a ? "wrong" : ""}`}
-                onClick={() => pick(j)} disabled={answered}
+                onClick={() => pick(j)}
+                disabled={answered}
               >
                 <span className="ol">{LABELS[j]}</span>{o}
               </button>
@@ -754,10 +785,14 @@ function QuizPage({ user, token, onNav }) {
             </div>
           )}
         </div>
+
+        {/* Button logic */}
         {answered && (
-          <button className="nxt-btn" onClick={next}>
-            {idx + 1 < QUIZ_QUESTIONS.length ? "NEXT →" : "SEE RESULTS →"}
-          </button>
+          idx + 1 < QUIZ_QUESTIONS.length ? (
+            <button className="nxt-btn" onClick={next}>NEXT →</button>
+          ) : (
+            <button className="nxt-btn" onClick={submit}>SEE RESULTS →</button>
+          )
         )}
       </div>
     </div>
