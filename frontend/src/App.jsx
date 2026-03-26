@@ -771,7 +771,7 @@ function QuizPage({ user, token, onNav }) {
             {q.o.map((o, j) => (
               <button
                 key={j}
-                className={`opt ${answered && j === q.a ? "correct" : ""} ${answered && j === chosen && j !== q.a ? "wrong" : ""}`}
+                className="opt"
                 onClick={() => pick(j)}
                 disabled={answered}
               >
@@ -779,7 +779,7 @@ function QuizPage({ user, token, onNav }) {
               </button>
             ))}
           </div>
-          // deleted feedbacks during quiz.
+         
         </div>
 
         {/* Button logic */}
