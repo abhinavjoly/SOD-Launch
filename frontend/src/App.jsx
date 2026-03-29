@@ -465,8 +465,8 @@ function LandingPage({ onNav }) {
         </div>
         <div className="feat-card">
           <div className="feat-icon">🔬</div>
-          <h3>DEEP TECH QUESTIONS</h3>
-          <p>Questions covering bandgap theory, MOSFETs, photonics, Hall effect, and cutting-edge semiconductor concepts.</p>
+          <h3>3 Rounds</h3>
+          <p>🔹 The Decrypt 🔹 The Enigma 🔹 The Treasure hunt .</p>
         </div>
         <div className="feat-card">
           <div className="feat-icon">⚡</div>
