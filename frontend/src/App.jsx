@@ -441,7 +441,7 @@ function LandingPage({ onNav }) {
     <div className="page">
       <div className="land-hero">
         <div className="land-badge">⚡ SOD CLUB · BMSIT & M · LAUNCH EVENT 2026</div>
-        <h1 className="land-title">WELCOME TO<br /><span>SOD CLUB</span></h1>
+        <h1 className="land-title">WELCOME TO<br /><span>0.7_Silicon_Multiverse</span></h1>
         <p className="land-sub">
           Welcome to the official launch event of the <strong style={{color:"var(--c1)"}}>Semiconductor for Optoelectronic Devices Club</strong> at BMSIT & M.
           Register your team, take the quiz, and make your mark on our inaugural leaderboard.
