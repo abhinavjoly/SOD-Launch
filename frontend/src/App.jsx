@@ -444,9 +444,9 @@ function LandingPage({ onNav }) {
         <h1 className="land-title">WELCOME TO<br /><span>0.7_Silicon_Multiverse</span></h1>
         <p className="land-sub">
           Welcome to the official launch event of the <strong style={{color:"var(--c1)"}}>Semiconductor for Optoelectronic Devices Club</strong> at BMSIT & M.
-          Register your team, take the quiz, and make your mark on our inaugural leaderboard.
+          Wishing you the best of luck!!.
         </p>
-        <div className="launch-ribbon">🚀 INAUGURAL LAUNCH EVENT · BMSIT & M · 2026</div>
+        <div className="launch-ribbon">🚀 INAUGURAL LAUNCH EVENT · SOD · BMSIT & M · 2026</div>
         <div className="land-btns">
           <button className="btn-primary" onClick={() => onNav("register")}>REGISTER TEAM</button>
           <button className="btn-outline" onClick={() => onNav("login")}>LOGIN</button>
