@@ -768,29 +768,37 @@ function handleSubmitAnswer() {
         <div className="qcard">
           <div className="qlb">QUESTION {String(idx + 1).padStart(2, "0")} / {QUIZ_QUESTIONS.length}</div>
           <div className="qt">{q.q}</div>
-          <div className="opts">
-            {q.o.map((o, j) => (
-              <button
-                key={j}
-                className="opt"
-                onClick={() => pick(j)}
-                disabled={answered}
-              >
-                <span className="ol">{LABELS[j]}</span>{o}
-              </button>
-            ))}
-          </div>
+          <div style={{marginTop:"16px"}}>
+  <input
+    type="text"
+    value={userAnswer}
+    onChange={e => setUserAnswer(e.target.value)}
+    onKeyDown={e => e.key === "Enter" && !submitted && handleSubmitAnswer()}
+    disabled={submitted}
+    placeholder="Type your answer here..."
+    style={{
+      width:"100%", background:"rgba(0,0,0,.5)",
+      border:"1px solid rgba(0,212,255,0.18)", borderRadius:"8px",
+      padding:"12px 16px", color:"#ddeeff",
+      fontFamily:"'Share Tech Mono',monospace", fontSize:"14px",
+      outline:"none"
+    }}
+  />
+</div>
          
         </div>
 
         {/* Button logic */}
-        {answered && (
-          idx + 1 < QUIZ_QUESTIONS.length ? (
-            <button className="nxt-btn" onClick={next}>NEXT →</button>
-          ) : (
-            <button className="nxt-btn" onClick={submit}>SEE RESULTS →</button>
-          )
-        )}
+        {!submitted ? (
+  <button className="nxt-btn" onClick={handleSubmitAnswer}
+    disabled={!userAnswer.trim()}>
+    {idx + 1 < QUIZ_QUESTIONS.length ? "NEXT →" : "SUBMIT →"}
+  </button>
+) : (
+  <button className="nxt-btn" onClick={next}>
+    {idx + 1 < QUIZ_QUESTIONS.length ? "NEXT →" : "SEE RESULTS →"}
+  </button>
+)}
       </div>
     </div>
   );
