@@ -674,8 +674,8 @@ function Dashboard({ user, quizEnabled, onNav, onStartQuiz }) {
 function QuizPage({ user, token, onNav }) {
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
-  const [answered, setAnswered] = useState(false);
-  const [chosen, setChosen] = useState(null);
+  const [userAnswer, setUserAnswer] = useState("");
+  const [submitted, setSubmitted] = useState(false);
   const [done, setDone] = useState(false);
   const LABELS = ["A", "B", "C", "D"];
   const q = QUIZ_QUESTIONS[idx];
@@ -696,19 +696,20 @@ function QuizPage({ user, token, onNav }) {
     }
   };
 
-  function pick(j) {
-    if (answered) return;
-    setAnswered(true);
-    setChosen(j);
-    if (j === q.a) setScore(s => s + 1);
-  }
+  
 
   function next() {
-    setIdx(i => i + 1);
-    setAnswered(false);
-    setChosen(null);
-  }
+  if (idx + 1 >= QUIZ_QUESTIONS.length) finish();
+  else { setIdx(i => i + 1); setUserAnswer(""); setSubmitted(false); }
+}
 
+function handleSubmitAnswer() {
+  if (!userAnswer.trim()) return;
+  setSubmitted(true);
+  if (userAnswer.trim().toLowerCase() === q.a.toLowerCase()) {
+    setScore(s => s + 1);
+  }
+}
   async function submit() {
     // Only called by "SEE RESULTS →"
     const finalScore = score + (chosen === q.a ? 1 : 0);
