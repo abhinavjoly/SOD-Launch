@@ -8,7 +8,7 @@ const BMS_LOGO = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAB4cAAAIcCAYAAAD1
 // ─── API CONFIG ───────────────────────────────────────────────────
 // Replace BASE_URL with your backend's base URL when ready
 const API = {
-  BASE_URL: "http://localhost:5000/api",
+  BASE_URL: "https://sod-launchevent-backend.onrender.com/api",
   register: (data) => fetch(`${API.BASE_URL}/auth/register`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }),
   login:    (data) => fetch(`${API.BASE_URL}/auth/login`,    { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }),
   getUsers: (token) => fetch(`${API.BASE_URL}/admin/users`,  { headers: { Authorization: `Bearer ${token}` } }),
@@ -949,6 +949,8 @@ function AdminPanel({ token, quizEnabled, onToggleQuiz }) {
       } catch { } finally { setLoading(false); }
     }
     load();
+    const interval = setInterval(load, 10000);
+    return () => clearInterval(interval);
   }, [token]);
 
   return (

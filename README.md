@@ -1,8 +1,4 @@
-# SOD Club Quiz Platform
-**Semiconductors for Optoelectronic Devices · BMSIT & M**
-> RESEARCH · INDUSTRIAL CONNECT · ENGINEER
-
----
+# SOD Club Frontend for Round 1
 
 ## Project Structure
 
@@ -14,17 +10,6 @@ sod-quiz-platform/
 │   ├── index.html
 │   ├── package.json
 │   └── vite.config.js
-│
-├── backend/           ← Flask API
-│   ├── app.py         ← All routes
-│   ├── requirements.txt
-│   └── README.md
-│
-├── .gitignore
-└── README.md
-```
-
----
 
 ## Quick Start
 
@@ -33,23 +18,10 @@ sod-quiz-platform/
 cd frontend
 npm install
 npm run dev
-# Runs on http://localhost:3000
+# Runs on http://localhost:3000 locally
 ```
-
-### Backend
-```bash
-cd backend
-pip install -r requirements.txt
-python app.py
-# Runs on http://localhost:5000
-```
-
----
 
 ## Team
 
 - **Frontend** — React + Vite
-- **Backend** — Python Flask + SQLite
-- **Auth** — JWT + bcrypt
-
-> See `backend/README.md` for full API documentation and the contract sheet.
+- **Auth** — JWT
